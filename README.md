@@ -8,18 +8,19 @@ This repository contains the source code for the Basics of Programming course at
 ## ⚙️ Prerequisites
 Prerequisites for running this project are as follows:
 - C++ Compiler
+- [Git](https://git-scm.com/)
 
 ## 🛠 How to Run Program
 Follow these steps to run the program:
 
 - Clone this repository
     ```shell
-    git clone https://github.com/gbagush/
+    git clone https://github.com/gbagush/CPPToDoAPP
     ```
 
 - Move to directory
     ```shell
-    cd 
+    cd CPPToDoAPP
     ```
 
 - Clone <a href="https://github.com/nlohmann/json">nlohmann/json</a> repository
