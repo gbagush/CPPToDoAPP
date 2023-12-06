@@ -56,6 +56,7 @@ struct ToDoControllers {
     string editTodo(json& todos, int& todoId, string& field, string& newValue);
     void markTodoAsDone(json& todos, int todoId);
     void deleteTodo(json& todos, int todoId);
+    void deleteTodosByCategory(json& todos, int category);
 };
 
 struct CategoryControllers {
@@ -372,7 +373,10 @@ void View::deleteCategory() {
         manageCategories();
     }
 
-    cout << endl << "Are you sure? (Y/n): ";
+    cout << endl;
+    
+    cout << "Deleting a category will delete all todos with that category" << endl;
+    cout << "Are you sure? (Y/n): ";
     cin >> confirm;
 
     if (confirm == 'Y' || confirm == 'y') {
@@ -897,6 +901,7 @@ void CategoryControllers::removeCategory(json& categories, int categoryId) {
         return category["id"] == categoryId;
     });
     categories.erase(it, categories.end());
+    todo.deleteTodosByCategory(todos, categoryId);
 }
 
 // TODO CONTROLLERS
@@ -1099,6 +1104,13 @@ void ToDoControllers::markTodoAsDone(json& todos, int todoId) {
 void ToDoControllers::deleteTodo(json& todos, int todoId) {
     auto it = remove_if(todos.begin(), todos.end(), [todoId](const auto& todo) {
         return todo["id"] == todoId;
+    });
+    todos.erase(it, todos.end());
+}
+
+void ToDoControllers::deleteTodosByCategory(json& todos, int category) {
+    auto it = remove_if(todos.begin(), todos.end(), [category](const auto& todo) {
+        return todo["category"] == category;
     });
     todos.erase(it, todos.end());
 }
