@@ -390,7 +390,17 @@ void View::deleteCategory() {
 
 // TODO VIEW
 void View::toDoTemplate(ToDo& todo) {
-    cout << "[" << (todo.isDone ? "V" : " ") << "] " << timestampFormattor(todo.deadline) << " | " << category.getCategoryName(categories, todo.category) << endl
+    char status;
+    if (todo.isDone) {
+        status = 'V';
+    } else {
+        if (todo.deadline < getCurrentTimestamp()) {
+            status = 'X';
+        } else {
+            status = ' ';
+        }
+    }
+    cout << "[" << status << "] " << timestampFormattor(todo.deadline) << " | " << category.getCategoryName(categories, todo.category) << endl
          << "    " << todo.title << " (" << todo.id << ")" << endl
          << "    " << todo.description << endl
          << endl;
