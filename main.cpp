@@ -53,6 +53,7 @@ struct ToDoControllers {
     void completedTodos(const json& todos);
     void overdueTodos(const json& todos);
     void todosByCategory(const json& todos, int& category);
+    void otherTodos(const json& todos);
     string editTodo(json& todos, int& todoId, string& field, string& newValue);
     void markTodoAsDone(json& todos, int todoId);
     void deleteTodo(json& todos, int todoId);
@@ -374,7 +375,7 @@ void View::deleteCategory() {
     }
 
     cout << endl;
-    
+
     cout << "Deleting a category will delete all todos with that category" << endl;
     cout << "Are you sure? (Y/n): ";
     cin >> confirm;
@@ -390,7 +391,6 @@ void View::deleteCategory() {
         manageCategories();
     }
 }
-
 
 // TODO VIEW
 void View::toDoTemplate(ToDo& todo) {
@@ -512,7 +512,18 @@ void View::showAllTodos() {
 
     clearScreen();
     cout << "ALL TODOS" << endl;
-    todo.displayTodos(todos);
+
+    cout << "Today:" << endl;
+    todo.todayTodos(todos);
+
+    cout << "Tomorrow:" << endl;
+    todo.tommorowTodos(todos);
+
+    cout << "Other:" << endl;
+    todo.otherTodos(todos);
+
+    cout << "Overdue:" << endl;
+    todo.overdueTodos(todos);
     
     cout << "Menu:" << endl
          << "1. Mark as done" << endl
@@ -1067,6 +1078,26 @@ void ToDoControllers::todosByCategory(const json& todos, int& category) {
         }
     }
 }
+
+void ToDoControllers::otherTodos(const json& todos) {
+    for (const auto& todo : todos) {
+        if (!(todo["deadline"] >= getTodayBeginTimestamp() && todo["deadline"] <= getTodayLastTimestamp()) && !(todo["deadline"] >= getTomorrowBeginTimestamp() && todo["deadline"] <= getTomorrowLastTimestamp()) && !(todo["isDone"] == false && todo["deadline"] < getCurrentTimestamp())) {
+            View view;
+            ToDo todoData;
+
+            todoData = {
+                todo["id"],
+                todo["title"],
+                todo["description"],
+                todo["category"],
+                todo["deadline"],
+                todo["isDone"]
+            };
+
+            view.toDoTemplate(todoData);
+        }
+    }
+}  
 
 string ToDoControllers::editTodo(json& todos, int& todoId, string& field, string& newValue) {
     for (auto& todo : todos) {
