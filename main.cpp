@@ -127,7 +127,6 @@ time_t convertToTimestamp(const string& dateTimeStr) {
     ss >> get_time(&dateTime, "%Y-%m-%d %H:%M");
     
     if (ss.fail()) {
-        // cerr << "Failed to parse datetime string." << endl;
         return -1;
     }
 
@@ -138,8 +137,7 @@ string timestampFormattor(time_t timestamp) {
     tm* dateTime = localtime(&timestamp);
 
     if (!dateTime) {
-        // cerr << "Failed to convert timestamp to local time." << endl;
-        return "Error"; // Error code, adjust as needed
+        return "Error";
     }
 
     stringstream ss;
@@ -466,7 +464,6 @@ void View::newTodo() {
     getline(cin, todoData.title);
 
     cout << "Description: ";
-    // cin.ignore();
     getline(cin, todoData.description);
 
     cout << endl;
